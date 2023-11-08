@@ -1,0 +1,26 @@
+body {
+    background: white;
+    color: black;
+}
+
+.cinema {
+    padding-top: 60px;
+    width: 600px;
+    margin: auto;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 10px;
+}
+
+.cell {
+    width: 25px;
+    height: 25px;
+    background-color: gray;
+    border: 1px solid black;
+}
+
+.mine-cell {
+    background-color: red;
+}
