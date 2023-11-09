@@ -3,12 +3,6 @@ body {
     color: black;
 }
 
-.cinema {
-    padding-top: 60px;
-    width: 600px;
-    margin: auto;
-}
-
 table {
     border-collapse: separate;
     border-spacing: 10px;
