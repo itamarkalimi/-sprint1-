@@ -74,9 +74,6 @@ function renderBoard(board) {
             const cell = board[i][j]
             // add class to cell
             var className = (cell.isMine && cell.isShown) ? 'mine-cell' : ''
-
-
-
             strHTML += `\t<td class="cell ${className}" 
                             onclick="onCellClicked(this, ${i}, ${j})" >
                          </td>\n`
@@ -99,6 +96,7 @@ function setMinesNegsCount(board) {
             console.log(`board[${i}][${j}].minesAroundCount:`, board[i][j].minesAroundCount)
         }
     }
+
 }
 
 // count the mines around the cell
@@ -122,6 +120,18 @@ function countMinesAroundCount(rowIdx, colIdx, mat) {
 }
 
 function onCellClicked(elCell, i, j) {
+    // get cell
+    console.log('Cell clicked: ', elCell, i, j)
+    // get data from function setNeg
+    // set the data in cell innerText
+    var cell = gBoard[i][j]
+    console.log('onCellClicked - cell', cell)
+    elCell.innerText = cell.minesAroundCount
+    console.log('elCell.innerText,minesAroundCount', cell.minesAroundCount)
+    // change style of cell 
+}
+
+function onCellClickedTyota(elCell, i, j) {
     const cell = gCinema[i][j]
     // ignore none seats and booked
     if (!cell.isSeat || cell.isBooked) return
