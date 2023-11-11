@@ -5,19 +5,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>sprint1 Project</title>
+  <title>MineSwipper Project</title>
   <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body onload="onInit()">
-  <table class="game-container">
-    <tbody class="game-table">
+  <div class="container">
+    <div>life left: </div>
+    <div class="life-place-counter"></div>
+    <div>game status: </div>
+    <div class="game-status" onclick="reset()"></div>
+    <table class="game-container">
+      <tbody class="game-table">
 
-    </tbody>
-  </table>
-  <footer>
-    Itamar Kalimi
-  </footer>
+      </tbody>
+    </table>
+    <footer>
+      Itamar Kalimi
+    </footer>
+  </div>
   <script src="js/main.js"></script>
 </body>
 

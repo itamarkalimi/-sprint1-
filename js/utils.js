@@ -160,3 +160,4 @@ function countNeighbors(rowIdx, colIdx, mat) {
   }
   return neighborsCount
 }
+

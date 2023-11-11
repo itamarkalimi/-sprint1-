@@ -2,10 +2,12 @@
 var gBoard
 
 var MINE = 'X'
+var clickCounter = 0
+var lifes = 3
 
 var gLevel = {
     size: 4,
-    mines: 2
+    mines: 4
 }
 
 var gGames = {
@@ -15,13 +17,25 @@ var gGames = {
     secsPassed: 0,
 }
 
+var gameOnStatus = ':)'
+var gameLoseStatus = ':('
+var gameWinStatus = ':-)'
+
+
 function onInit() {
-    //document.querySelector('.cell').addEventListener("click", onFirstTimeClick())
-    //gBoard = onFirstTimeClick()
     gBoard = buildBoard()
-    console.log('gBoard buildBoard:', gBoard)
+    //console.log('gBoard buildBoard:', gBoard)
     // console.log('gBoard2 setMinesNegsCount:', gBoard)
+    gGames.isOn = true
+    const elGameStatus = document.querySelector('.game-status')
+    if (gGames.isOn === true) {
+        elGameStatus.innerText = gameOnStatus
+    }
+    const elLifePlaceCounter = document.querySelector('.life-place-counter')
+    elLifePlaceCounter.innerText = lifes
+    clickCounter = 0
     renderBoard(gBoard)
+
     //addMines(gBoard)
     // saif 4 test:
     //console.log('renderMines', renderMines())
@@ -43,30 +57,7 @@ function buildBoard() {
         }
     }
 
-    gameBoard[0][1] = {
-        minesAroundCount: 0,
-        isShown: false,
-        isMine: true,
-        isMarked: false
-    }
-    gameBoard[1][0] = {
-        minesAroundCount: 0,
-        isShown: false,
-        isMine: true,
-        isMarked: false
-    }
-    gameBoard[1][3] = {
-        minesAroundCount: 0,
-        isShown: false,
-        isMine: true,
-        isMarked: false
-    }
-    gameBoard[1][2] = {
-        minesAroundCount: 0,
-        isShown: false,
-        isMine: true,
-        isMarked: false
-    }
+
     return gameBoard
 }
 
@@ -81,9 +72,8 @@ function renderBoard(board) {
             //var cellClass = getClassName({ i, j })
 
             // add class to cell
-            var className = (cell.isMine && cell.isShown) ? 'mine-cell' : ''
-            strHTML += `\t<td class="cell ${className}" 
-                            onclick="onCellClicked(this, ${i}, ${j})" >
+            strHTML += `\t<td class="cell" 
+                            onclick="onCellClicked(this, ${i}, ${j}), onSecondTimeClick(), onLifeCounter(${i}, ${j}), renderGameStatus(), expandShown(gBoard, ${i}, ${j})">
                          </td>\n`
         }
         strHTML += `</tr>\n`
@@ -105,10 +95,10 @@ function setMinesNegsCount(board) {
         for (var j = 0; j < board[i].length; j++) {
             // update every cell object property
             board[i][j].minesAroundCount = countMinesAroundCount(i, j, board)
-            console.log(`board[${i}][${j}].minesAroundCount:`, board[i][j].minesAroundCount)
+            //console.log(`board[${i}][${j}].minesAroundCount:`, board[i][j].minesAroundCount)
         }
     }
-    console.log('setMinesNegsCount gBoard: ', gBoard)
+    //console.log('setMinesNegsCount gBoard: ', gBoard)
     return board
 }
 
@@ -125,20 +115,27 @@ function countMinesAroundCount(rowIdx, colIdx, mat) {
             if (mat[i][j].isMine === true) minesAroundCount++
         }
     }
-    console.log('minesAroundCount: ', minesAroundCount)
+    //console.log('minesAroundCount: ', minesAroundCount)
     return minesAroundCount
 }
 
 function onCellClicked(elCell, i, j) {
     // get cell
-    console.log('Cell clicked: ', elCell, i, j)
+    //console.log('Cell clicked: ', elCell, i, j)
     // get data from function setNeg
     // set the data in cell innerText
     var cell = gBoard[i][j]
-    console.log('onCellClicked - cell', cell)
+    //console.log('onCellClicked - cell', cell)
     elCell.innerText = cell.minesAroundCount
-    console.log('elCell.innerText,minesAroundCount', cell.minesAroundCount)
-    // change style of cell 
+    //console.log(elCell)
+    if (cell.isMine === true) {
+        console.log('elCell isMine enter')
+        elCell.innerText = MINE
+    } else {
+        elCell.style.backgroundColor = 'red'
+    }
+    //console.log('comes here')
+
 }
 
 
@@ -201,23 +198,103 @@ function onCellClicked(elCell, i, j) {
 
 //saif 6
 
-function onFirstTimeClick() {
-    const gameBoard = []
-    for (var i = 0; i < gLevel.size; i++) {
-        gameBoard[i] = []
-        for (var j = 0; j < gLevel.size; j++) {
-            // create cell 
-            gameBoard[i][j] = {
-                minesAroundCount: 0,
-                isShown: false,
-                isMine: false,
-                isMarked: false
-            }
+function onSecondTimeClick() {
+    //console.log('onSecondTimeClick')
+
+    renderOnSecondTimeClick(gBoard)
+}
+
+// saif 6
+function renderOnSecondTimeClick(gameBoard) {
+    // Increment the click counter
+    ++clickCounter;
+    console.log('renderOnSecondTimeClick')
+    // Check if it's the second click
+    if (clickCounter === 1) {
+        // console.log('renderOnSecondTimeClick inner 2 clickCounter')
+        // Perform the action on the second click
+
+        gameBoard[0][1] = {
+            minesAroundCount: 0,
+            isShown: false,
+            isMine: true,
+            isMarked: false
+        }
+        gameBoard[1][0] = {
+            minesAroundCount: 0,
+            isShown: false,
+            isMine: true,
+            isMarked: false
+        }
+        gameBoard[1][3] = {
+            minesAroundCount: 0,
+            isShown: false,
+            isMine: true,
+            isMarked: false
+        }
+        gameBoard[1][2] = {
+            minesAroundCount: 0,
+            isShown: false,
+            isMine: true,
+            isMarked: false
         }
     }
-
-    document.querySelector('.cell').removeEventListener("click", onFirstTimeClick())
+    setMinesNegsCount(gBoard)
+    //console.log(gameBoard)
     return gameBoard
+}
+
+
+//saif 7
+function onLifeCounter(i, j) {
+    var cell = gBoard[i][j]
+    if (cell.isMine === true && lifes > 0) --lifes
+    const elLifePlaceCounter = document.querySelector('.life-place-counter')
+    elLifePlaceCounter.innerText = lifes
+}
+
+function renderGameStatus() {
+    const elGameStatus = document.querySelector('.game-status')
+
+    if (gGames.isOn === true) {
+        elGameStatus.innerText = gameOnStatus
+    }
+    if (lifes === 0) {
+        gGames.isOn === false
+        elGameStatus.innerText = gameLoseStatus
+    }
+}
+
+function reset() {
+    lifes = 3
+    onInit()
+}
+
+function expandShown(mat, rowIdx, colIdx) {
+    console.log('rowIdx', rowIdx)
+    console.log('colIdx', colIdx)
+    for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
+        if (i < 0 || i >= mat.length) continue
+
+        for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+            if (i === rowIdx && j === colIdx) continue
+            if (j < 0 || j >= mat[i].length) continue
+            if (!mat[rowIdx][colIdx].isMine) {
+                // go arount this element
+                // add class to cell
+                console.log('go here')
+                if (!mat[i][j].isMine) var className = 'mine-free'
+                else className = ''
+                console.log('className', className)
+                var elMineFree = document.querySelector('.cell')
+                elMineFree.classList.add(className)
+                console.log('elMineFree', elMineFree)
+                elMineFree.style.color = 'white'
+
+            }
+            //console.log(mat[i][j])
+        }
+    }
 }
 
 function onCellMarked(elCell) {
@@ -228,6 +305,3 @@ function checkGameOver() {
 
 }
 
-function expandShown(board, elCell, i, j) {
-
-}

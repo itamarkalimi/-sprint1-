@@ -15,6 +15,11 @@ table {
     border: 1px solid black;
 }
 
-.mine-cell {
+.cell .mine-free {
     background-color: red;
+}
+
+.container {
+    margin: auto;
+    padding: 10em;
 }
