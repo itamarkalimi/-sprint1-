@@ -24,22 +24,6 @@ function getRandomColor() {
   return color;
 }
 
-function getRandomEmptyCellPosition() {
-  const emptyCells = []
-  for (var i = 0; i < gBoard.length; i++) {
-    for (var j = 0; j < gBoard[i].length; j++) {
-      const cell = gBoard[i][j]
-      if (!cell.gameElement && cell.type === FLOOR) {
-        emptyCells.push({ i, j })
-      }
-    }
-  }
-
-  if (!emptyCells.length) return null
-
-  const randIdx = getRandomInt(0, emptyCells.length)
-  return emptyCells[randIdx]
-}
 
 // get diagonal
 function printPrimaryDiagonal(mat) {
@@ -104,8 +88,8 @@ function stopTimer() {
   clearInterval(gInterval)
 }
 
-
-
+// get random empty position
+// ask
 function getPosOfRandomCell(mat, value) {
   var cellsPos = []
   for (var i = 0; i < mat.length; i++) {
@@ -125,6 +109,61 @@ function getPosOfRandomCell(mat, value) {
 
   return randomCellPos
 }
+
+// get random empty position that doesn't include a specipc cell content
+function getRandomEmptyCellPosition() {
+  const emptyCells = []
+  for (var i = 0; i < gBoard.length; i++) {
+    for (var j = 0; j < gBoard[i].length; j++) {
+      const cell = gBoard[i][j]
+      if (!cell.gameElement && cell.type === FLOOR) {
+        emptyCells.push({ i, j })
+      }
+    }
+  }
+
+  if (!emptyCells.length) return null
+
+  const randIdx = getRandomInt(0, emptyCells.length)
+  return emptyCells[randIdx]
+}
+
+function getRandomEmptyCellPosition() {
+  const emptyCells = []
+  for (var i = 0; i < gBoard.length; i++) {
+    for (var j = 0; j < gBoard[i].length; j++) {
+      const cell = gBoard[i][j]
+      // get a cell that is NOT - GHOST, SUPER FOOD, WALL , CHERRY
+      if (cell !== GHOST && cell !== SUPER_FOOD && cell !== WALL && cell !== CHERRY && cell !== PACMAN) {
+        emptyCells.push({ i, j })
+      }
+    }
+  }
+
+  if (!emptyCells.length) return null
+
+  const randIdx = getRandomInt(0, emptyCells.length)
+  return emptyCells[randIdx]
+}
+
+// add ball to random empty location
+function addBall(board) {
+  //check for a empty cell
+  var randomEmptyCellLocation = getEmptyCell(gBoard)
+  if (!randomEmptyCellLocation) {
+    clearInterval(gIntervalIDBall)
+    return
+  }
+  // we got an object with i,j, meaning we got a cell location
+  // put a ball in the randomEmptyCell
+  board[randomEmptyCellLocation.i][randomEmptyCellLocation.j].gameElement = BALL
+  // update model
+  ++gBallAmount
+
+  //update DOM with renderCell not renderBoard(board)
+  renderCell(randomEmptyCellLocation, BALL_IMG)
+}
+
 //create walls
 
 // neiber loop
@@ -146,7 +185,7 @@ function countNeighbors(idxI, idxJ, mat, iRange = 1, jRange = 1, value = '') {
   return count
 }
 // game of life
-function countNeighbors(rowIdx, colIdx, mat) {
+function countNeighbors1(rowIdx, colIdx, mat) {
   var neighborsCount = 0
 
   for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
@@ -160,4 +199,82 @@ function countNeighbors(rowIdx, colIdx, mat) {
   }
   return neighborsCount
 }
+
+function renderCell(location, value) {
+  // Select the elCell and set the value
+  // update DOM
+  const elCell = document.querySelector(`.cell-${location.i}-${location.j}`)
+  elCell.innerHTML = value
+}
+
+// move player:
+
+const nextCell = gBoard[nextLocation.i][nextLocation.j]
+
+
+// DONE: moving from current location:
+// DONE: update the model
+const currLoc = gBoard[gPacman.location.i][gPacman.location.j]
+// update currect location
+gBoard[gPacman.location.i][gPacman.location.j] = EMPTY
+// DONE: update the DOM
+renderCell(gPacman.location, EMPTY)
+
+// DONE: Move the pacman to new location:
+// DONE: update the model
+gBoard[nextLocation.i][nextLocation.j] = PACMAN
+gPacman.location = nextLocation
+// DONE: update the DOM
+renderCell(gPacman.location, PACMAN)
+
+// get a cell update dom
+document.querySelector(`[data-i=${i}][data-j=${j}]`)
+// get data in html (dataset)
+elElement.dataset.nameOfdataset// like dataset.i/j 
+
+function renderBoard(board) {
+
+  var strHTML = ''
+  const elBoard = document.querySelector('.board')
+
+  for (var i = 0; i < board.length; i++) {
+
+    strHTML += '<tr>\n'
+
+    for (var j = 0; j < board[0].length; j++) {
+      const currCell = board[i][j]
+
+      var cellClass = getClassName({ i, j })
+
+      if (currCell.type === FLOOR) cellClass += ' floor'
+      else if (currCell.type === WALL) cellClass += ' wall'
+
+      strHTML += `\t<td class="cell ${cellClass}" onclick="moveTo(${i},${j})">`
+
+      if (currCell.gameElement === GAMER) {
+        strHTML += GAMER_IMG
+      } else if (currCell.gameElement === BALL) {
+        strHTML += BALL_IMG
+      }
+
+      strHTML += '</td>\n'
+    }
+    strHTML += '</tr>\n'
+  }
+  // console.log('strHTML is:')
+  // console.log(strHTML)
+  elBoard.innerHTML = strHTML
+}
+
+function getClassName(position) {
+  const cellClass = `cell-${position.i}-${position.j}`
+  return cellClass
+}
+
+
+// get a cell update dom
+document.querySelector(`[data-i="${i}"][data-j="${j}]"`)
+el.innerText
+// get data in html (dataset)
+elElement.dataset.nameOfdataset// like dataset.i/j 
 

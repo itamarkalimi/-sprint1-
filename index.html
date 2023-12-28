@@ -5,26 +5,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>MineSwipper Project</title>
+  <title>Mine Sweeper Project</title>
   <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body onload="onInit()">
-  <div class="container">
-    <div>life left: </div>
-    <div class="life-place-counter"></div>
-    <div>game status: </div>
-    <div class="game-status" onclick="reset()"></div>
-    <table class="game-container">
-      <tbody class="game-table">
-
-      </tbody>
-    </table>
-    <footer>
-      Itamar Kalimi
-    </footer>
+  <div class="hints">
+    <span class="hint1" onclick="activeHint(this)">hint 1 🏆, </span>
+    <span class="hint2" onclick="activeHint(this)">hint 2 🏆, </span>
+    <span class="hint3" onclick="activeHint(this)">hint 3 🏆 </span>
   </div>
+  <div class="level">
+    Choose level:
+    <button class="btn-easy" onclick="setLevel(this)">4</button>
+    <button class="btn-easy" onclick="setLevel(this)">8</button>
+    <button class="btn-easy" onclick="setLevel(this)">16</button>
+  </div>
+  <div class="safe-click">
+    Safe click:
+    <button class="btn-safe-click" onclick="revelCellTemp()">Safe Mode 1</button>
+    <button class="btn-safe-click" onclick="revelCellTemp()">Safe Mode 2</button>
+    <button class="btn-safe-click" onclick="revelCellTemp()">Safe Mode 3</button>
+  </div>
+  <div class="lives">Live left: 3</div>
+  <div class="smile" onclick="onInit()"></div>
+
+  <div class="container">
+
+    <table class="game-container">
+    </table>
+
+  </div>
+  <footer>Itamar Kalimi</footer>
   <script src="js/main.js"></script>
+  <script src="js/hints.js"></script>
+  <script src="js/endGame.js"></script>
+  <script src="js/mines.js"></script>
+
 </body>
+
+
 
 </html>

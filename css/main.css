@@ -1,9 +1,11 @@
 body {
     background: white;
     color: black;
+
 }
 
-table {
+
+.game-container {
     border-collapse: separate;
     border-spacing: 10px;
 }
@@ -15,11 +17,32 @@ table {
     border: 1px solid black;
 }
 
-.cell .mine-free {
-    background-color: red;
+.lives {
+    display: flex;
+    justify-content: center;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
 }
 
 .container {
-    margin: auto;
-    padding: 10em;
+    display: flex;
+    justify-content: center;
+}
+
+.smile {
+    display: flex;
+    justify-content: center;
+}
+
+.level {
+    display: flex;
+    justify-content: center;
+}
+
+.hints {
+    display: flex;
+    justify-content: center;
 }
